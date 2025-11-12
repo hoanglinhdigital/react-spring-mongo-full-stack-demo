@@ -1,9 +1,9 @@
-FROM maven:3.8.3-openjdk-17 as buildstep
+FROM maven:3.9-eclipse-temurin-21 as buildstep
 WORKDIR /app
 COPY . .
 RUN mvn clean install
 
-FROM openjdk:21
+FROM eclipse-temurin:21-jre
 COPY --from=buildstep /app/target/student-app-api-0.0.1-SNAPSHOT.jar /usr/share/myservice/
-ENTRYPOINT ["/usr/bin/java", "-jar", "/usr/share/myservice/student-app-api-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "/usr/share/myservice/student-app-api-0.0.1-SNAPSHOT.jar"]
 EXPOSE 8080
