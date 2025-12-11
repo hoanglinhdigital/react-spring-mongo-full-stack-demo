@@ -46,12 +46,13 @@
 * Parameter group: Chọn Parameter group tạo ra ở bước trên.
 * Đặt username/password cho Cluster. Lưu ý username phải khác ```admin```
 * Cấu hình Security group cần thiết cho Cluster (Port 27017)
-* Sử dụng một EC2 có cài sẵn mongosh để kết nối thử đến Database. Troubleshoot nếu có issue.  
-<span style="color: red;">*Lưu ý: DocumentDB của AWS hiện không hỗ trợ kết nối từ máy local (thông qua internet) nên bạn buộc phải tạo ra một EC2 instance cùng VPC với MongoDB, cài mongosh lên đó sau đó thử kết nối bằng câu lệnh</span> vd:  
+* Sử dụng một EC2 có cài sẵn mongosh để kết nối thử đến Database. Troubleshoot nếu có issue.    
+<span style="color:red">
+*Lưu ý: DocumentDB của AWS hiện không hỗ trợ kết nối từ máy local (thông qua internet) nên bạn buộc phải tạo ra một EC2 instance cùng VPC với MongoDB, cài mongosh lên đó sau đó thử kết nối bằng câu lệnh sau nếu cần debug:
 `mongosh --host linh-test-db.cluster-cwpdzas1s9oa.ap-southeast-1.docdb.amazonaws.com:27017 --username linhadmin --password`  
 Nhập password, Enter
 * Tham khảo link của AWS: `https://docs.aws.amazon.com/documentdb/latest/developerguide/troubleshooting.connecting.html#troubleshooting.cannot-connect.public-endpoints`
-
+</span>
 
 #### 3. Tạo sẵn một Application Load Balancer
 - Tạo Application Load Balancer, listener port 80 (hoặc 443 nếu có SSL).
@@ -63,6 +64,7 @@ Nhập password, Enter
 #### 4. ⁠Triển khai Backend
 - Build Dockerimage và push lên ECR. 
 - Tạo Backend Task definition, lưu ý overwrite `MONGO_URL` cho backend (lưu ý password đang lưu plaintex, cần cải thiện trong tương lai sử dụng Secret Manager)
+<span style="color:red"> LƯU Ý phải có /dev ở cuối:  </span>
 - Ví dụ: ```mongodb://linhadmin:thisismypassword@linh-mongo.cluster-cwpdzas1s9oa.ap-southeast-1.docdb.amazonaws.com:27017/dev```
 - Tạo Backend Service, chọn backend-target-group, listener tương ứng.
 - Test API vd GET ```<alb-domain>:80/api/students```, kết quả trả về danh sách students theo dạng Json là OK.
@@ -94,10 +96,12 @@ Nhập password, Enter
 * Đặt username/password cho Cluster. Lưu ý username phải khác ```admin```
 * Cấu hình Security group cần thiết cho Cluster (Port 27017)
 * Sử dụng một EC2 có cài sẵn mongosh để kết nối thử đến Database. Troubleshoot nếu có issue.  
-<span style="color: red;">*Lưu ý: DocumentDB của AWS hiện không hỗ trợ kết nối từ máy local (thông qua internet) nên bạn buộc phải tạo ra một EC2 instance cùng VPC với MongoDB, cài mongosh lên đó sau đó thử kết nối bằng câu lệnh</span> vd:  
+<span style="color:red">
+*Lưu ý: DocumentDB của AWS hiện không hỗ trợ kết nối từ máy local (thông qua internet) nên bạn buộc phải tạo ra một EC2 instance cùng VPC với MongoDB, cài mongosh lên đó sau đó thử kết nối bằng câu lệnh sau nếu cần debug:
 `mongosh --host linh-test-db.cluster-cwpdzas1s9oa.ap-southeast-1.docdb.amazonaws.com:27017 --username linhadmin --password`  
 Nhập password, Enter
 * Tham khảo link của AWS: `https://docs.aws.amazon.com/documentdb/latest/developerguide/troubleshooting.connecting.html#troubleshooting.cannot-connect.public-endpoints`
+</span>
 
 #### 3. Tạo một Application Load Balancer
 - Tạo Application Load Balancer, listener port 80 (hoặc 443 nếu có SSL).
